@@ -47,19 +47,19 @@ PaperTrail/
 └── requirements.txt      # Project dependencies
 ```
 ## ✨ Features Implemented
-*🔐 Login Feature (apps/login): Secure authentication and session verification.
-*📝 Register Feature (apps/register): Automated creation of student user accounts, base profile, and default preferences.
-*🏠 Home Dashboard (apps/home): Landing screen displaying active user status, feature quick-access cards, and secure logout.
-*👤 Profile Feature (apps/profile): Read and update user profile information (full_name, bio) linked via a OneToOneField to Django's User model.
-*⚙️ User Settings (apps/user_settings): Manage account preferences (dark_mode, email_notifications).
-*☁️ Cloud Database: Hosted PostgreSQL backend connected via Supabase.
+* 🔐 Login Feature (apps/login): Secure authentication and session verification.
+* 📝 Register Feature (apps/register): Automated creation of student user accounts, base profile, and default preferences.
+* 🏠 Home Dashboard (apps/home): Landing screen displaying active user status, feature quick-access cards, and secure logout.
+* 👤 Profile Feature (apps/profile): Read and update user profile information (full_name, bio) linked via a OneToOneField to Django's User model.
+* ⚙️ User Settings (apps/user_settings): Manage account preferences (dark_mode, email_notifications).
+* ☁️ Cloud Database: Hosted PostgreSQL backend connected via Supabase.
 
 ## 🛠️ Tech Stack
-*Backend Framework: Django (Python 3.x)
-*Database: PostgreSQL (Hosted on Supabase)
-*Database Driver / Adapter: psycopg[binary], dj-database-url
-*Configuration Management: python-dotenv
-*Frontend: Django Template Language (DTL), HTML5, Pure CSS3, JavaScript
+* Backend Framework: Django (Python 3.x)
+* Database: PostgreSQL (Hosted on Supabase)
+* Database Driver / Adapter: psycopg[binary], dj-database-url
+* Configuration Management: python-dotenv
+* Frontend: Django Template Language (DTL), HTML5, Pure CSS3, JavaScript
 
 ## 🚀 Getting Started
 Follow these steps to run the project locally on your machine:
