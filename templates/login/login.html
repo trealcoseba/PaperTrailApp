@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PaperTrail - Sign In</title>
+    <link rel="stylesheet" href="{% static 'css/login/login.css' %}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="brand"><span>📄</span> PaperTrail</div>
+            <div class="nav-links">
+                <a href="{% url 'login:login' %}" class="active-link">Login</a>
+                <a href="{% url 'register:register' %}" class="btn-reg">Register</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="card">
+            <div class="card-header">
+                <h2>Sign in to PaperTrail</h2>
+                <p>Track your university documents seamlessly</p>
+            </div>
+
+            {% if error %}<div class="alert-error">{{ error }}</div>{% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" name="password" required>
+                </div>
+                <button type="submit" class="btn-primary">Sign In</button>
+            </form>
+
+            <div class="footer-text">
+                Don't have an account? <a href="{% url 'register:register' %}">Register here</a>
+            </div>
+        </div>
+    </main>
+    <script src="{% static 'js/login/login.js' %}"></script>
+</body>
+</html>
