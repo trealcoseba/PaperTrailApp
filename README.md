@@ -46,49 +46,55 @@ PaperTrail/
 ├── manage.py             # Django CLI runner
 └── requirements.txt      # Project dependencies
 ```
-✨ Features Implemented
-🔐 Login Feature (apps/login): Secure authentication and session verification.
-📝 Register Feature (apps/register): Automated creation of student user accounts, base profile, and default preferences.
-🏠 Home Dashboard (apps/home): Landing screen displaying active user status, feature quick-access cards, and secure logout.
-👤 Profile Feature (apps/profile): Read and update user profile information (full_name, bio) linked via a OneToOneField to Django's User model.
-⚙️ User Settings (apps/user_settings): Manage account preferences (dark_mode, email_notifications).
-☁️ Cloud Database: Hosted PostgreSQL backend connected via Supabase.
-🛠️ Tech Stack
-Backend Framework: Django (Python 3.x)
-Database: PostgreSQL (Hosted on Supabase)
-Database Driver / Adapter: psycopg[binary], dj-database-url
-Configuration Management: python-dotenv
-Frontend: Django Template Language (DTL), HTML5, Pure CSS3, JavaScript
-🚀 Getting Started
+## ✨ Features Implemented
+*🔐 Login Feature (apps/login): Secure authentication and session verification.
+*📝 Register Feature (apps/register): Automated creation of student user accounts, base profile, and default preferences.
+*🏠 Home Dashboard (apps/home): Landing screen displaying active user status, feature quick-access cards, and secure logout.
+*👤 Profile Feature (apps/profile): Read and update user profile information (full_name, bio) linked via a OneToOneField to Django's User model.
+*⚙️ User Settings (apps/user_settings): Manage account preferences (dark_mode, email_notifications).
+*☁️ Cloud Database: Hosted PostgreSQL backend connected via Supabase.
+
+## 🛠️ Tech Stack
+*Backend Framework: Django (Python 3.x)
+*Database: PostgreSQL (Hosted on Supabase)
+*Database Driver / Adapter: psycopg[binary], dj-database-url
+*Configuration Management: python-dotenv
+*Frontend: Django Template Language (DTL), HTML5, Pure CSS3, JavaScript
+
+## 🚀 Getting Started
 Follow these steps to run the project locally on your machine:
-1. Clone the Repository
-code
-Bash
+## 1. Clone the Repository
+```bash
 git clone https://github.com/trealcoseba/PaperTrailApp.git
 cd PaperTrailApp
-2. Create and Activate a Virtual Environment
-code
-Powershell
+```
+## 2. Create and Activate a Virtual Environment
+```bash
 python -m venv venv
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 .\venv\Scripts\Activate.ps1
-3. Install Dependencies
-code
-Powershell
+```
+## 3. Install Dependencies
+```bash
 pip install -r requirements.txt
-4. Configure Environment Variables
+```
+## 4. Configure Environment Variables
 Create a .env file in the project root:
-code
-Env
+```bash
 DATABASE_URL=postgresql://postgres.<PROJECT_REF>:<PASSWORD>@<POOLER_HOST>:5432/postgres
-5. Run Migrations & Start Server
-code
-Powershell
+```
+## 5. Run Migrations & Start Server
+```bash
 python manage.py makemigrations
 python manage.py migrate
 python manage.py runserver
-Open your browser and visit:
+```
+## Open your browser and visit:
 👉 http://127.0.0.1:8000/
-👤 Author
-Lemuel Vincent Alcoseba
-BS Computer Science
+
+## 👤 Author
+
+**Lemuel Vincent Alcoseba III**
+* 🎓 **Program:** BS Computer Science
+* 🐙 **GitHub:** [@trealcoseba](https://github.com/trealcoseba)
+* 💼 **Project:** CSIT327 Final Project
