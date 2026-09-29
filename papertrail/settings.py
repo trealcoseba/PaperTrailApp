@@ -47,6 +47,11 @@ INSTALLED_APPS = [
     'apps.home',
     'apps.profile',
     'apps.user_settings',
+    'apps.offices',
+    'apps.workflows',
+    'apps.documents',
+    'apps.notifications',
+    'apps.audit_logs',
 ]
 
 MIDDLEWARE = [
