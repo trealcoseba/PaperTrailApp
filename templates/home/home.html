@@ -4,8 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PaperTrail - Home Screen</title>
+    <title>PaperTrail - Home Dashboard</title>
     <link rel="stylesheet" href="{% static 'css/home/home.css' %}">
+    <style>
+        .doc-list { margin-top: 2rem; text-align: left; }
+        .doc-item { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.2rem; margin-bottom: 0.75rem; transition: 0.15s; }
+        .doc-item:hover { border-color: #cbd5e1; box-shadow: 0 4px 12px -2px rgba(0,0,0,0.05); }
+        .badge { font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 6px; }
+        .badge-pending { background: #fef3c7; color: #b45309; }
+        .badge-approved { background: #dcfce7; color: #15803d; }
+        .btn-track { background: #4f46e5; color: white; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.85rem; font-weight: 700; text-decoration: none; }
+        .btn-new-main { display: inline-block; background: #4f46e5; color: white; padding: 0.7rem 1.4rem; border-radius: 8px; font-weight: 700; text-decoration: none; margin-top: 1rem; }
+    </style>
 </head>
 <body>
     <nav class="navbar">
@@ -24,27 +34,54 @@
     <main class="main-content">
         <div class="card-wide">
             <div class="icon-badge">🏛️</div>
-            <h1 class="title">HOME SCREEN</h1>
+            <h1 class="title">STUDENT DASHBOARD</h1>
             <p class="subtitle">
-                Welcome, <strong>{{ user.first_name }} {{ user.last_name }}</strong> ({{ user.username }})!
+                Welcome back, <strong>{{ user.first_name }} {{ user.last_name }}</strong> ({{ user.username }})
             </p>
 
-            <div class="grid-features">
+            <a href="{% url 'documents:create' %}" class="btn-new-main">+ Submit New Document Request</a>
+
+            <!-- Quick Metrics -->
+            <div class="grid-features" style="margin-top: 2rem;">
                 <div class="feature-box">
-                    <h4>📋 Track Requests</h4>
-                    <p>Monitor submitted forms across university offices.</p>
+                    <h4>📊 Total Requests</h4>
+                    <p style="font-size: 1.5rem; font-weight: 800; color: #4f46e5; margin-top: 6px;">{{ total_docs }}</p>
                 </div>
                 <div class="feature-box">
-                    <h4>➕ New Submission</h4>
-                    <p>Initiate a multi-step clearance or approval workflow.</p>
+                    <h4>⏱️ Active Tracking</h4>
+                    <p style="font-size: 1.5rem; font-weight: 800; color: #f59e0b; margin-top: 6px;">{{ active_docs }}</p>
                 </div>
                 <div class="feature-box">
-                    <h4>⏱️ Processing History</h4>
-                    <p>View timestamps and remarks from personnel.</p>
+                    <h4>🏢 Connected Offices</h4>
+                    <p style="font-size: 1.5rem; font-weight: 800; color: #10b981; margin-top: 6px;">5 Stages</p>
                 </div>
             </div>
+
+            <!-- Active Tracked Documents List -->
+            <div class="doc-list">
+                <h3 style="font-size: 1.1rem; font-weight: 800; color: #1e293b; margin-bottom: 1rem;">Your Active Documents</h3>
+                {% for doc in documents %}
+                    <div class="doc-item">
+                        <div>
+                            <span style="font-size: 0.75rem; font-weight: 700; color: #64748b;">{{ doc.tracking_number }}</span>
+                            <h4 style="font-size: 1rem; font-weight: 800; color: #0f172a; margin-top: 2px;">{{ doc.document_title }}</h4>
+                            <span style="font-size: 0.8rem; color: #64748b;">Stage {{ doc.current_step_order }} of 5 &bull; {{ doc.submitted_at|date:"M d, Y" }}</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <span class="badge {% if doc.status == 'Approved' or doc.status == 'Released' %}badge-approved{% else %}badge-pending{% endif %}">
+                                {{ doc.status }}
+                            </span>
+                            <a href="{% url 'documents:track' doc.tracking_number %}" class="btn-track">Track Progress →</a>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div style="text-align: center; padding: 2rem; background: #f8fafc; border-radius: 12px; color: #64748b;">
+                        You have no active documents being tracked. Click <strong>+ Submit New Document Request</strong> above to start!
+                    </div>
+                {% endfor %}
+            </div>
+
         </div>
     </main>
-    <script src="{% static 'js/home/home.js' %}"></script>
 </body>
 </html>
