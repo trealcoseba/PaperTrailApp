@@ -1,0 +1,117 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PaperTrail - Live Tracker [{{ document.tracking_number }}]</title>
+    <link rel="stylesheet" href="{% static 'css/home/home.css' %}">
+    <style>
+        .tracker-card { background: white; max-width: 800px; width: 100%; padding: 2.5rem; border-radius: 20px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.08); border: 1px solid #e2e8f0; margin: 2rem auto; }
+        .receipt-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px dashed #e2e8f0; padding-bottom: 1.5rem; margin-bottom: 2rem; }
+        .tracking-badge { background: #e0e7ff; color: #4338ca; font-weight: 800; font-size: 1.1rem; padding: 6px 14px; border-radius: 8px; }
+        
+        /* 5-Stage Stepper Bar */
+        .stepper { display: flex; justify-content: space-between; position: relative; margin: 2.5rem 0; }
+        .stepper::before { content: ''; position: absolute; top: 20px; left: 20px; right: 20px; height: 4px; background: #e2e8f0; z-index: 1; }
+        .step-item { position: relative; z-index: 2; text-align: center; width: 100px; }
+        .step-circle { width: 44px; height: 44px; border-radius: 50%; background: #f1f5f9; border: 3px solid #cbd5e1; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px auto; font-weight: 800; font-size: 0.9rem; color: #64748b; }
+        .step-item.active .step-circle { background: #4f46e5; border-color: #312e81; color: white; box-shadow: 0 0 0 4px rgba(79,70,229,0.25); }
+        .step-item.completed .step-circle { background: #10b981; border-color: #047857; color: white; }
+        .step-label { font-size: 0.75rem; font-weight: 700; color: #334155; }
+        
+        /* Status Card */
+        .info-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; }
+        .info-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.25rem; }
+        .info-box h5 { font-size: 0.75rem; color: #64748b; text-transform: uppercase; margin-bottom: 4px; }
+        .info-box p { font-size: 1rem; font-weight: 700; color: #1e293b; }
+
+        /* Timeline Table */
+        .timeline-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        .timeline-table th { background: #f1f5f9; padding: 10px; font-size: 0.75rem; text-align: left; color: #475569; }
+        .timeline-table td { padding: 12px 10px; font-size: 0.85rem; border-bottom: 1px solid #f1f5f9; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="brand"><span>📄</span> PaperTrail</div>
+            <div class="nav-links">
+                <a href="{% url 'home:home' %}">Home</a>
+                <a href="{% url 'documents:create' %}">+ New Request</a>
+                <a href="{% url 'profile:profile' %}">Profile</a>
+                <a href="{% url 'user_settings:settings' %}">Settings</a>
+                <a href="{% url 'home:logout' %}" class="btn-logout">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="tracker-card">
+            
+            <div class="receipt-header">
+                <div>
+                    <span style="font-size: 0.8rem; color: #64748b; font-weight: 600;">DIGITAL RECEIPT & TRACKING</span>
+                    <h2 style="font-size: 1.5rem; font-weight: 800; color: #0f172a; margin-top: 4px;">{{ document.document_title }}</h2>
+                    <p style="font-size: 0.85rem; color: #64748b;">Submitted on {{ document.submitted_at|date:"M d, Y" }}</p>
+                </div>
+                <div>
+                    <span class="tracking-badge">{{ document.tracking_number }}</span>
+                </div>
+            </div>
+
+            <!-- Visual 5-Stage Stepper -->
+            <div class="stepper">
+                {% for s in steps %}
+                    <div class="step-item {% if s.step_order < document.current_step_order %}completed{% elif s.step_order == document.current_step_order %}active{% endif %}">
+                        <div class="step-circle">
+                            {% if s.step_order < document.current_step_order %}✓{% else %}{{ s.step_order }}{% endif %}
+                        </div>
+                        <div class="step-label">{{ s.office.code }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Current Location & Next Step -->
+            <div class="info-panel">
+                <div class="info-box">
+                    <h5>Current Location</h5>
+                    <p>{{ current_step.office.name }}</p>
+                    <span style="font-size: 0.75rem; color: #64748b;">Action: {{ current_step.required_action }}</span>
+                </div>
+                <div class="info-box">
+                    <h5>Next Processing Stage</h5>
+                    <p>{% if next_step %}{{ next_step.office.name }}{% else %}Ready for Final Release 🎉{% endif %}</p>
+                    <span style="font-size: 0.75rem; color: #64748b;">Estimated turnaround: ~{{ current_step.expected_duration_days }} business day</span>
+                </div>
+            </div>
+
+            <!-- Stage History Timeline -->
+            <h3 style="font-size: 1rem; font-weight: 800; color: #1e293b; margin-top: 1.5rem;">Recorded Action History (Audit Trail)</h3>
+            <table class="timeline-table">
+                <thead>
+                    <tr>
+                        <th>Office</th>
+                        <th>Action Taken</th>
+                        <th>Remarks / Reason</th>
+                        <th>Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in logs %}
+                        <tr>
+                            <td><strong>{{ log.office.code }}</strong></td>
+                            <td><span style="color: #4f46e5; font-weight: 600;">{{ log.action_taken }}</span></td>
+                            <td>{{ log.remarks|default:"In processing" }}</td>
+                            <td style="color: #64748b;">{{ log.entered_at|date:"M d, Y h:i A" }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr><td colspan="4">No history recorded yet.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </main>
+</body>
+</html>
